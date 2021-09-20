@@ -1,32 +1,25 @@
 import shutil
 import pandas as pd
-from os import path, system, rename, remove
-from datetime import datetime
+from os import path, rename
 
 
-class FreqAnalyser():
+class FileAnalyser():
 
     @staticmethod
-    def get_students_dataset(path):
+    def get_students_dataset(path, teacher_name):
         df = pd.read_csv(path, sep='\t', encoding='utf-16');
-        df = df[df['Nome Completo'] != 'Caio.Couto'];
-        std_names = sorted(list({ 
-            name:df[df['Nome Completo'] == name][['Atividade', 'Data e hora']] 
-            for name in df['Nome Completo'].unique()
-        }.keys()));
-        print(std_names);
+        df = df[df['Nome Completo'] != teacher_name];
         return { 
             name:df[df['Nome Completo'] == name][['Atividade', 'Data e hora']] 
             for name in df['Nome Completo'].unique()
         }
 
-class FreqHandler():
+class FileHandler():
 
-    def __init__(self, date, user, destination):
+    def __init__(self, date, user, destination, teacher_name):
+        self.__teacher_name = teacher_name;
         self.__file = f'{date.replace("/","_")}.csv';
-        self.__file_original_path = path.join(
-            'C:\\', 'Users', user, 'Downloads'
-        );
+        self.__file_downloads_path = path.join('C:\\', 'Users', user, 'Downloads');
         self.__file_destination_path = path.join(
             'C:\\', 'Users', user, 'Documents', destination, 'Listas de presença'
         );
@@ -42,25 +35,26 @@ class FreqHandler():
 
     def rename_file(self):
         self.__display_message('Renomeando arquivo...');
-        original_file = path.join(self.__file_original_path, 'meetingAttendanceList.csv');
-        new_file = path.join(self.__file_original_path, self.__file);
-        rename(original_file,new_file);
+        attendance_file = path.join(self.__file_downloads_path, 'meetingAttendanceList.csv');
+        new_file = path.join(self.__file_downloads_path, self.__file);
+        rename(attendance_file, new_file);
 
     def move_file(self):
         self.__display_message('Movendo arquivo...');
         shutil.move(
-            path.join(self.__file_original_path, self.__file), 
+            path.join(self.__file_downloads_path, self.__file), 
             path.join(self.__file_destination_path, self.__file)
         );
 
     def return_freq_dataset(self):
         self.__display_message('Buscando dados dos alunos...');
-        return FreqAnalyser.get_students_dataset(
-            path.join(self.__file_original_path, self.__file)
+        return FileAnalyser.get_students_dataset(
+            path.join(self.__file_downloads_path, self.__file),
+            self.__teacher_name
         );
 
 if __name__ == '__main__':
-    freq_handler = FreqHandler('17/09/2021');
+    freq_handler = FileHandler('24/08/2021', 'caio_', 'SENAC', 'Caio.Couto');
     freq_handler.rename_file();
     students_data = freq_handler.return_freq_dataset();
     freq_handler.move_file();

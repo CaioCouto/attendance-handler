@@ -1,5 +1,5 @@
 from classes.crawler import SysCrawler
-from classes.freqHandler import FreqHandler
+from classes.filehandler import FileHandler
 from datetime import datetime
 from dotenv import dotenv_values
 
@@ -10,18 +10,18 @@ def get_today_date():
     year = datetime.today().year;
     month = f'0{datetime.today().month }' if datetime.today().month < 10 else datetime.today().month;
     day = f'0{datetime.today().day }' if datetime.today().day < 10  else datetime.today().day;
-    return f'16/09/2021';
-    # return f'{day}/{month}/{year}';
+    return f'{day}/{month}/{year}';
 
 env_vars = dotenv_values('.env')
 
-freq_handler = FreqHandler(
+file_handler = FileHandler(
   get_today_date(),
   env_vars['USER'],
-  env_vars['FOLDER_DESTINATION']
+  env_vars['FOLDER_DESTINATION'],
+  env_vars['TEACHER_NAME']
 );
-freq_handler.rename_file();
-students_data = freq_handler.return_freq_dataset();
+file_handler.rename_file();
+students_data = file_handler.return_freq_dataset();
 
 browser = SysCrawler(
   env_vars['SYS_URL'],
@@ -41,4 +41,4 @@ browser.handle_attendance(students_data);
 
 allow_continuity();
 browser.close_browser();
-freq_handler.move_file();
+file_handler.move_file();

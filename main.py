@@ -10,7 +10,8 @@ def get_today_date():
     year = datetime.today().year;
     month = f'0{datetime.today().month }' if datetime.today().month < 10 else datetime.today().month;
     day = f'0{datetime.today().day }' if datetime.today().day < 10  else datetime.today().day;
-    return f'{day}/{month}/{year}';
+    # return f'{day}/{month}/{year}';
+    return f'21/09/2021';
 
 env_vars = dotenv_values('.env')
 

@@ -88,7 +88,7 @@ class SysCrawler():
 
     def redirect_to_frequency(self, date):
         self.__display_message('Redirecionando para diário de classe...');
-        divs = self.__browser.find_elements_by_xpath("//div[@class='list list-lg ng-tns-c13-1 ng-star-inserted']");
+        divs = self.__browser.find_elements_by_xpath("//div[@class='list-body']");
         pages = self.__browser.find_elements_by_xpath(
                 "//ngb-pagination[@class='ng-star-inserted']//ul[@class='pagination']//li"
         )[2:-2];
@@ -97,13 +97,22 @@ class SysCrawler():
             self.__display_message(f'Buscando aula na página 0{self.__page+1}...');
             for d in divs:
                 try:
-                    elem = d.find_element_by_xpath(f".//span[contains(text(), 'Dia Letivo: {date}')]");
-                    if elem:
-                        self.__display_message('Aula encontrada. Redirecionando...')
-                        dropdown = d.find_element_by_xpath(".//div[@class='dropdown-menu']");
-                        self.__browser.execute_script("arguments[0].setAttribute('class', 'dropdown-menu show')", dropdown);
-                        link = dropdown.find_elements_by_xpath(".//a[@class='dropdown-item acao-editar text-primary ng-star-inserted']");
-                        link[1].click();
+                    elem = d.find_element_by_xpath(f".//span[@class='badge badge-pill badge-light']");
+                    if date in elem.text:
+                        self.__display_message('Aula encontrada. Redirecionando...');
+                        dropdown = d.find_element_by_css_selector(".font-085.dropdown-menu");
+                        self.__browser.execute_script(
+                            "arguments[0].setAttribute('class', 'font-085 dropdown-menu show')", 
+                            dropdown
+                        );
+                        link = dropdown.find_elements_by_xpath(
+                            ".//a[@class='dropdown-item acao-editar text-primary ng-star-inserted']"
+                        );
+                        choice = int(input('(C)onteúdo ou (F)requência? '))
+                        if choice in 'fF':
+                            link[1].click();
+                        else:
+                            link[0].click();
                         return
                 except:
                     pass;

@@ -10,8 +10,7 @@ def get_today_date():
     year = datetime.today().year;
     month = f'0{datetime.today().month }' if datetime.today().month < 10 else datetime.today().month;
     day = f'0{datetime.today().day }' if datetime.today().day < 10  else datetime.today().day;
-    # return f'{day}/{month}/{year}';
-    return f'21/09/2021';
+    return f'{day}/{month}/{year}';
 
 env_vars = dotenv_values('.env')
 
@@ -21,8 +20,8 @@ file_handler = FileHandler(
   env_vars['FOLDER_DESTINATION'],
   env_vars['TEACHER_NAME']
 );
-# file_handler.rename_file();
-# students_data = file_handler.return_freq_dataset();
+file_handler.rename_file();
+students_data = file_handler.return_freq_dataset();
 
 browser = SysCrawler(
   env_vars['SYS_URL'],
@@ -34,12 +33,12 @@ browser = SysCrawler(
 browser.sign_in();
 browser.redirect_to_class_notes();
 
-# allow_continuity();
-# browser.redirect_to_attendance_or_content(get_today_date(), 'f');
+allow_continuity();
+browser.redirect_to_attendance_or_content(get_today_date(), 'f');
 
-# allow_continuity();
-# browser.handle_attendance(students_data);
-# browser.redirect_to_class_notes();
+allow_continuity();
+browser.handle_attendance(students_data);
+browser.redirect_to_class_notes();
 
 allow_continuity();
 browser.redirect_to_attendance_or_content(get_today_date(), 'c');

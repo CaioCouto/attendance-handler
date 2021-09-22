@@ -21,8 +21,8 @@ file_handler = FileHandler(
   env_vars['FOLDER_DESTINATION'],
   env_vars['TEACHER_NAME']
 );
-file_handler.rename_file();
-students_data = file_handler.return_freq_dataset();
+# file_handler.rename_file();
+# students_data = file_handler.return_freq_dataset();
 
 browser = SysCrawler(
   env_vars['SYS_URL'],
@@ -34,11 +34,19 @@ browser = SysCrawler(
 browser.sign_in();
 browser.redirect_to_class_notes();
 
-allow_continuity();
-browser.redirect_to_frequency(get_today_date());
+# allow_continuity();
+# browser.redirect_to_attendance_or_content(get_today_date(), 'f');
+
+# allow_continuity();
+# browser.handle_attendance(students_data);
+# browser.redirect_to_class_notes();
 
 allow_continuity();
-browser.handle_attendance(students_data);
+browser.redirect_to_attendance_or_content(get_today_date(), 'c');
+
+allow_continuity();
+browser.handle_content();
+browser.redirect_to_class_notes();
 
 allow_continuity();
 browser.close_browser();

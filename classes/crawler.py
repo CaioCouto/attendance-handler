@@ -75,6 +75,10 @@ class SysCrawler():
                 btns[i].click();
                 btns[i].click();
 
+    def __save_changes(self, btn):
+        input('Pressione ENTER para confirmar as alterações.');
+        btn.click();
+
     def sign_in(self):
         self.__wait_for_loading(3);
         self.__display_message('Realizando login...');
@@ -86,7 +90,7 @@ class SysCrawler():
         self.__display_message('Redirecionando para caderneta...');
         self.__browser.get(self.__class_notes_link);
 
-    def redirect_to_frequency(self, date):
+    def redirect_to_attendance_or_content(self, date, destination):
         self.__display_message('Redirecionando para diário de classe...');
         divs = self.__browser.find_elements_by_xpath("//div[@class='list-body']");
         pages = self.__browser.find_elements_by_xpath(
@@ -108,8 +112,7 @@ class SysCrawler():
                         link = dropdown.find_elements_by_xpath(
                             ".//a[@class='dropdown-item acao-editar text-primary ng-star-inserted']"
                         );
-                        choice = int(input('(C)onteúdo ou (F)requência? '))
-                        if choice in 'fF':
+                        if destination in 'fF':
                             link[1].click();
                         else:
                             link[0].click();
@@ -128,15 +131,22 @@ class SysCrawler():
         for std in std_names:
             for d in divs:
                 name = self.__format_std_name(d);
-                if name == std:
+                if std == name:
                     system('cls');
                     self.__display_std_info(data, std);
-                    freq_buttons = d.find_elements_by_xpath(".//sig-botoes-frequencia[@class='ng-star-inserted']");
+                    freq_buttons = d.find_elements_by_xpath(
+                        ".//sig-botoes-frequencia[@class='ng-star-inserted']"
+                    );
                     markings = input('Ordem de Marcação: ');
                     self.__handle_freq_buttons_click(markings, freq_buttons);     
-        
-        input('Pressione ENTER para confirmar as marcações.');
-        self.__browser.find_element_by_xpath("//button[@class='btn btn-success m-2']").click()
+        self.__save_changes(
+            self.__browser.find_element_by_xpath("//button[@class='btn btn-success m-2']")
+        );
+    
+    def handle_content(self):
+        self.__save_changes(
+            self.__browser.find_element_by_xpath("//button[@id='btn-salvar']")
+        )
 
     def close_browser(self):
         self.__browser.close();

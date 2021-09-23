@@ -92,12 +92,12 @@ class SysCrawler():
 
     def redirect_to_attendance_or_content(self, date, destination):
         self.__display_message('Redirecionando para diário de classe...');
-        divs = self.__browser.find_elements_by_xpath("//div[@class='list-body']");
         pages = self.__browser.find_elements_by_xpath(
                 "//ngb-pagination[@class='ng-star-inserted']//ul[@class='pagination']//li"
         )[2:-2];
 
         while True:
+            divs = self.__browser.find_elements_by_xpath("//div[@class='list-body']");
             self.__display_message(f'Buscando aula na página 0{self.__page+1}...');
             for d in divs:
                 try:

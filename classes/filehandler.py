@@ -7,7 +7,7 @@ class FileAnalyser():
 
     @staticmethod
     def get_students_dataset(path, teacher_name):
-        df = pd.read_csv(path, sep='\t', encoding='utf-16');
+        df = pd.read_csv(path, encoding='utf-16');
         df = df[df['Nome Completo'] != teacher_name];
         return { 
             name:df[df['Nome Completo'] == name][['Atividade', 'Data e hora']] 

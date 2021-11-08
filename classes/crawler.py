@@ -5,21 +5,21 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.select import Select
-from selenium.webdriver.support import expected_conditions as EC
 
 
 class SysCrawler():
 
-    def __init__(self, sys_url, sys_region, login_email, login_password, class_notes_link):
-        self.__sys_region = sys_region
-        self.__login_email = login_email
-        self.__login_password = login_password
-        self.__class_notes_link = class_notes_link
-        self.__page = 0;
+    def __init__(self):
         geckodriver = path.join(getcwd(), 'geckodriver.exe');
+        env_vars = dotenv_values('.env');
+        self.__page = 0;
+        self.__sys_region = env_vars['SYS_REGION'];
+        self.__login_email = env_vars['LOGIN_EMAIL'];
+        self.__login_password = env_vars['LOGIN_PASSWORD'];
+        self.__class_notes_link = env_vars['CLASS_NOTES_LINK'];
         self.__browser = webdriver.Firefox(executable_path=geckodriver);
         self.__display_message('Abrindo navegador...');
-        self.__browser.get(sys_url);
+        self.__browser.get(env_vars['SYS_URL']);
 
     def __wait_for_loading(self, x):
         sleep(x);

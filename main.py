@@ -1,7 +1,6 @@
+from datetime import datetime
 from classes.crawler import SysCrawler
 from classes.filehandler import FileHandler
-from datetime import datetime
-from dotenv import dotenv_values
 
 def allow_continuity():
     input('Pressione ENTER para continuar.\n');
@@ -12,24 +11,11 @@ def get_today_date():
     day = f'0{datetime.today().day }' if datetime.today().day < 10  else datetime.today().day;
     return f'{day}/{month}/{year}';
 
-env_vars = dotenv_values('.env')
-
-file_handler = FileHandler(
-  get_today_date(),
-  env_vars['USER'],
-  env_vars['FOLDER_DESTINATION'],
-  env_vars['TEACHER_NAME']
-);
+file_handler = FileHandler(get_today_date());
 file_handler.rename_file();
 students_data = file_handler.return_freq_dataset();
 
-browser = SysCrawler(
-  env_vars['SYS_URL'],
-  env_vars['SYS_REGION'],
-  env_vars['LOGIN_EMAIL'],
-  env_vars['LOGIN_PASSWORD'],
-  env_vars['CLASS_NOTES_LINK'],
-);
+browser = SysCrawler();
 browser.sign_in();
 browser.redirect_to_class_notes();
 

@@ -1,6 +1,7 @@
 import shutil
 import pandas as pd
 from os import path, rename
+from dotenv import dotenv_values
 
 
 class FileAnalyser():
@@ -16,12 +17,13 @@ class FileAnalyser():
 
 class FileHandler():
 
-    def __init__(self, date, user, destination, teacher_name):
-        self.__teacher_name = teacher_name;
+    def __init__(self, date):
+        env_vars = dotenv_values('.env');
+        self.__teacher_name = env_vars['TEACHER_NAME'];
         self.__file = f'{date.replace("/","_")}.csv';
-        self.__file_downloads_path = path.join('C:\\', 'Users', user, 'Downloads');
+        self.__file_downloads_path = path.join('C:\\', 'Users', env_vars['USER'], 'Downloads');
         self.__file_destination_path = path.join(
-            'C:\\', 'Users', user, 'Documents', destination, 'Listas de presença'
+            'C:\\', 'Users', env_vars['USER'], 'Documents', env_vars['FOLDER_DESTINATION'], 'Listas de presença'
         );
 
     def __display_message(self, msg):

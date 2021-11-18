@@ -70,6 +70,14 @@ class SysCrawler():
             self.close_browser();
             exit();
 
+    def __get_markings_from_user(self):
+        while True:
+            markings = input('Ordem de Marcação: ');
+            if len(markings) == 0 or len(markings) == 3:
+                return 'fff' if len(markings) == 0 else markings;
+            else:
+                print('Por favor, forneça uma marcação válida'); 
+
     def __handle_freq_buttons_click(self, markings, btns):
         for i in range(3):
             if markings[i] == 'v':
@@ -138,7 +146,7 @@ class SysCrawler():
                     freq_buttons = d.find_elements_by_xpath(
                         ".//sig-botoes-frequencia[@class='ng-star-inserted']"
                     );
-                    markings = input('Ordem de Marcação: ');
+                    markings = self.__get_markings_from_user();
                     self.__handle_freq_buttons_click(markings, freq_buttons);     
         self.__save_changes(
             self.__browser.find_element_by_xpath("//button[@class='btn btn-success m-2']")

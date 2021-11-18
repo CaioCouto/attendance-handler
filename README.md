@@ -1,6 +1,6 @@
 # Attendance Handler
 
-## What is my project and what does it do?
+## What is this project and what does it do?
 I started working for and education company and they asked all the instructor to register attendance and content to their system. Since it envolved a lot of repetitive clicking, I decided to create a semi-autonomous bot to help me in this task.
 
 Using Selenium and Pandas, the bot is reponsible for:

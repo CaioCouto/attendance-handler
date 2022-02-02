@@ -56,7 +56,7 @@ class FileHandler():
         );
 
 if __name__ == '__main__':
-    freq_handler = FileHandler('24/08/2021', 'caio_', 'SENAC', 'Caio.Couto');
+    freq_handler = FileHandler('24/08/2021', env_vars['USER'], env_vars['FOLDER_DESTINATION'].upper, env_vars['TEACHER_NAME']);
     freq_handler.rename_file();
     students_data = freq_handler.return_freq_dataset();
     freq_handler.move_file();
